@@ -28,7 +28,7 @@ def create():
         title = request.form["nameTitle"]
         body = request.form["nameBody"]
         error = None
-        file = request.files.get("file")
+        file = request.files.get("nameFile")
         filename = None
         media_type = None
 
@@ -62,10 +62,10 @@ def update(id):
     if request.method == "POST":
         title = request.form["nameTitle"]
         body = request.form["nameBody"]
-        file = request.files.get("file")
-        remove_file = "remove_file" in request.form
+        file = request.files.get("nameFile")
+        remove_file = "nameRemoveFile" in request.form
 
-        filename = post["name_file"]
+        filename = post["media_filename"]
         media_type = post["media_type"]
         error = None
 
