@@ -1,15 +1,35 @@
 {% extends 'base.html' %}
 
+{% block title %}Create Post - Flask Blog{% endblock %}
+
 {% block header %}
-  <h1>{% block title %}New Post{% endblock %}</h1>
+  <header>
+    <h1>Create a New Post</h1>
+  </header>
 {% endblock %}
 
 {% block content %}
-  <form method="post">
-    <label for="title">Title</label>
-    <input name="title" id="title" value="{{ request.form['title'] }}" required>
-    <label for="body">Body</label>
-    <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
-    <input type="submit" value="Save">
-  </form>
+  <article>
+    <form method="post" enctype="multipart/form-data">
+      <fieldset>
+        <legend>Post details</legend>
+
+        <label for="title">Title</label>
+        <input id="title" name="title" type="text" required
+               value="{{ request.form['title'] or '' }}">
+
+        <label for="body">Body</label>
+        <textarea id="body" name="body">{{ request.form['body'] or '' }}</textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>Upload media (optional)</legend>
+
+        <label for="file">Choose a file</label>
+        <input id="file" name="file" type="file" accept="image/*,video/*">
+      </fieldset>
+
+      <button type="submit">Create</button>
+    </form>
+  </article>
 {% endblock %}

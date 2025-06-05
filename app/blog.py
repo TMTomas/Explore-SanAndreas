@@ -1,84 +1,152 @@
-from flask import(
-    Blueprint, flash, g, redirect, render_template, request, url_for
-)
+import os
+
+from flask import Blueprint, current_app, flash, g, redirect, render_template, request, send_from_directory, url_for
+from werkzeug.utils  import secure_filename
 from werkzeug.exceptions import abort
 
 from .auth import login_required
 from .db import get_db
 
-bp = Blueprint('blog', __name__)
+bp = Blueprint("blog", __name__)
 
-@bp.route('/')
+
+@bp.route("/")
 def index():
     db = get_db()
     posts = db.execute(
-        'SELECT p.id, title, body, created, author_id, username FROM post p JOIN user u on p.author_id = u.id ORDER BY created DESC'
+        "SELECT p.id, title, body, created, author_id, username, media_filename, media_type"
+        " FROM post p JOIN user u ON p.author_id = u.id"
+        " ORDER BY created DESC"
     ).fetchall()
-    return render_template('blog/index.html', posts = posts)
+    return render_template("blog/index.html", posts=posts)
 
-@bp.route('/create', methods=('GET', 'POST'))
+
+@bp.route("/create", methods=("GET", "POST"))
 @login_required
 def create():
-    if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
+    if request.method == "POST":
+        title = request.form["title"]
+        body = request.form["body"]
         error = None
+        file = request.files.get("file")
+        filename = None
+        media_type = None
 
         if error is not None:
             flash(error)
         else:
-                db = get_db()
-                db.execute(
-                    'INSERT INTO post (title, body, author_id) VALUES (?, ?, ?)',
-                    (title, body, g.user['id'])
-                )
-                db.commit()
-                return redirect(url_for('blog.index'))
-    return render_template('blog/create.html')
+            if file and file.filename:
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
+                mimetype = file.mimetype
+                if mimetype.startswith("image"):
+                    media_type = "image"
+                elif mimetype.startswith("video"):
+                    media_type = "video"
+            db = get_db()
+            db.execute(
+                "INSERT INTO post (title, body, author_id, media_filename, media_type)"
+                " VALUES (?, ?, ?, ?, ?)",
+                (title, body, g.user["id"], filename, media_type),
+            )
+            db.commit()
+            return redirect(url_for("blog.index"))
+    return render_template("blog/create.html")
 
-@bp.route('/<int:id>/update', methods=('GET', 'POST'))
+
+@bp.route("/<int:id>/update", methods=("GET", "POST"))
 @login_required
 def update(id):
     post = get_post(id)
 
-    if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
+    if request.method == "POST":
+        title = request.form["title"]
+        body = request.form["body"]
+        file = request.files.get("file")
+        remove_file = "remove_file" in request.form
+
+        filename = post["media_filename"]
+        media_type = post["media_type"]
         error = None
 
         if not title:
-            error = 'Title is requeired'
+            error += "Title is required "
+        if remove_file and filename:
+            try:
+                os.remove(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
+            except FileNotFoundError:
+                error += "File not found"
+                pass
+            filename = None
+            media_type = None
+            
+        if file and file.filename:
+            if filename:
+                try:
+                    os.remove(
+                        os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
+                    )
+                except FileNotFoundError:
+                    error += "File not found"
+                    pass
+                
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
+            
+            mimetype = file.mimetype
+            media_type = (
+                "image"
+                if mimetype.startswith("image")
+                else "video" if mimetype.startswith("video") else None
+            )
+
         if error is not None:
             flash(error)
         else:
             db = get_db()
             db.execute(
-                'UPDATE post SET title = ?, body = ? WHERE id = ?', (title, body, id)
+                "UPDATE post SET title = ?, body = ?, media_filename = ?, media_type = ? WHERE id = ?",
+                (title, body, filename, media_type, id),
             )
             db.commit()
-            return redirect(url_for('blog.index'))
+            return redirect(url_for("blog.index"))
 
-    return render_template('blog/update.html', post = post)
+    return render_template("blog/update.html", post=post)
 
-@bp.route('/<int:id>/delete', methods=('POST',))
+
+@bp.route("/<int:id>/delete", methods=("POST",))
 @login_required
 def delete(id):
     get_post(id)
     db = get_db()
-    db.execute('DELETE FROM post WHERE id = ?', (id,))
+    db.execute("DELETE FROM post WHERE id = ?", (id,))
     db.commit()
-    return redirect(url_for('blog.index'))
-    
+    return redirect(url_for("blog.index"))
+
+
 def get_post(id, check_author=True):
-    post = get_db().execute(
-        'SELECT p.id, title, body, created, author_id, username FROM post p JOIN user u ON p.author_id = u.id WHERE p.id = ?', (id,)
-    ).fetchone()
+    yau = get_db().execute(
+            "SELECT p.id, title, body, created, media_filename, media_type, author_id, username FROM post p JOIN user u ON p.author_id = u.id WHERE p.id = ?",
+            (id,),
+        ).fetchone()
+    print(dict(yau))
+    post = (
+        get_db()
+        .execute(
+            "SELECT p.id, title, body, created, media_filename, media_type, author_id, username FROM post p JOIN user u ON p.author_id = u.id WHERE p.id = ?",
+            (id,),
+        )
+        .fetchone()
+    )
 
     if post is None:
         abort(404, f"Post id {id} doesn't exist.")
 
-    if check_author and post['author_id'] != g.user['id']:
+    if check_author and post["author_id"] != g.user["id"]:
         abort(403)
 
     return post
 
+@bp.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)

@@ -1,0 +1,230 @@
+/* Reset and Box Model */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base Layout */
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #222;
+  background-color: #fff; /* Keep white background */
+  padding: 2rem;
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #084f35; /* deep GTA green */
+}
+
+header p {
+  font-size: 1rem;
+  color: #b16e18; /* subtle golden brown */
+  margin-top: 0.5rem;
+}
+
+/* Navigation */
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: #b16e18;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
+  color: #8a5012;
+}
+
+/* Posts */
+article {
+  background-color: #fff; /* stays white */
+  border-bottom: 1px solid #eee;
+  padding: 1.5rem 0;
+}
+
+article:last-of-type {
+  border-bottom: none;
+}
+
+article h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #084f35;
+  margin-bottom: 0.5rem;
+}
+
+article time {
+  font-size: 0.85rem;
+  color: #888;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+article p {
+  margin-bottom: 1rem;
+}
+
+/* Media */
+figure {
+  margin: 1.5rem 0;
+}
+
+figure img,
+figure video {
+  width: 100%;
+  border-radius: 6px;
+}
+
+figcaption {
+  font-size: 0.85rem;
+  color: #666;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Forms */
+form {
+  margin-bottom: 3rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+input[type="text"],
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+input[type="submit"],
+button {
+  background-color: #084f35;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover,
+button:hover {
+  background-color: #063b27;
+}
+
+/* Flash Messages */
+.flash-messages {
+  background-color: #fff4d4;
+  color: #a86200;
+  padding: 1rem;
+  border-left: 4px solid #b16e18;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+    padding: 1rem;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  article {
+    padding: 1.25rem 0;
+  }
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: #111;
+  color: #eee;
+}
+
+body.dark-mode header h1,
+body.dark-mode article h2 {
+  color: #90ee90;
+}
+
+body.dark-mode header p,
+body.dark-mode nav a,
+body.dark-mode article time,
+body.dark-mode figcaption {
+  color: #ccc;
+}
+
+body.dark-mode nav a:hover {
+  color: #fff;
+}
+
+body.dark-mode article {
+  background-color: #1b1b1b;
+  border-bottom: 1px solid #333;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode input[type="file"] {
+  background-color: #222;
+  color: #eee;
+  border-color: #444;
+}
+
+body.dark-mode .flash-messages {
+  background-color: #333;
+  color: #ffc107;
+  border-left-color: #ffc107;
+}
+
+body.dark-mode input[type="submit"],
+body.dark-mode button {
+  background-color: #3c6e47;
+  color: #fff;
+}
+
+body.dark-mode input[type="submit"]:hover,
+body.dark-mode button:hover {
+  background-color: #265137;
+}

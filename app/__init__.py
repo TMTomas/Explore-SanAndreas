@@ -7,6 +7,10 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(SECRET_KEY='dev', DATABASE=os.path.join(app.instance_path, 'exploringsa.sqlite'))
 
+    UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
     else:
@@ -33,4 +37,4 @@ def create_app(test_config=None):
     
     return app
 
-    
+

@@ -1,27 +1,43 @@
 {% extends 'base.html' %}
+
+{% block title %}Home - Flask Blog{% endblock %}
+
 {% block header %}
-<h1>{% block title %}Posts{% endblock %}</h1>
-{% if g.user %}
-<a class="action" href="{{ url_for('blog.create') }}">New</a>
-{% endif %}
+  <header>
+    <h1>All Posts</h1>
+  </header>
 {% endblock %}
 
 {% block content %}
-{% for post in posts %}
-<article class="post">
-    <header>
-        <div>
-            <h1>{{ post['title'] }}</h1>
-            <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }}</div>
-        </div>
-        {% if g.user['id'] == post['author_id'] %}
-        <a class="action" href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
-        {% endif %}
-    </header>
-    <p class="body">{{ post['body'] }}</p>
-</article>
-{% if not loop.last %}
-<hr>
-{% endif %}
-{% endfor %}
+  {% if posts %}
+    <section aria-label="Blog posts">
+      {% for post in posts %}
+        <article>
+          <header>
+            <h2>{{ post['title'] }}</a></h2>
+            <p>By {{ post['username'] }} on {{ post['created'] }}</p>
+          </header>
+
+          <p>{{ post['body']|truncate(200) }}</p>
+
+          {% if post['media_filename'] %}
+            <figure>
+              {% if post['media_type'] == 'image' %}
+                <img src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}"
+                     alt="Image for post {{ post['title'] }}">
+              {% elif post['media_type'] == 'video' %}
+                <video controls width="300">
+                  <source src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}">
+                  Your browser does not support the video tag.
+                </video>
+              {% endif %}
+              <figcaption>Media for "{{ post['title'] }}"</figcaption>
+            </figure>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </section>
+  {% else %}
+    <p>No posts yet.</p>
+  {% endif %}
 {% endblock %}
