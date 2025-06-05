@@ -14,19 +14,19 @@
       <fieldset>
         <legend>Post details</legend>
 
-        <label for="title">Title</label>
-        <input id="title" name="title" type="text" required
-               value="{{ request.form['title'] or '' }}">
+        <label for="idTitle">Title</label>
+        <input id="idTitle" name="nameTitle" type="text" required
+               value="{{ request.form['nameTitle'] or '' }}">
 
-        <label for="body">Body</label>
-        <textarea id="body" name="body">{{ request.form['body'] or '' }}</textarea>
+        <label for="idBody">Body</label>
+        <textarea id="idBody" name="nameBody">{{ request.form['nameBody'] or '' }}</textarea>
       </fieldset>
 
       <fieldset>
         <legend>Upload media (optional)</legend>
 
-        <label for="file">Choose a file</label>
-        <input id="file" name="file" type="file" accept="image/*,video/*">
+        <label for="idFile">Choose a file</label>
+        <input id="idFile" name="nameFile" type="file" accept="image/*,video/*">
       </fieldset>
 
       <button type="submit">Create</button>

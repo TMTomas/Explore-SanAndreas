@@ -13,17 +13,17 @@
         <fieldset>
           <legend>Post content</legend>
 
-          <label for="title">Title</label>
-          <input type="text" id="title" name="title"
-                 value="{{ request.form['title'] or post['title'] }}" required>
+          <label for="idTitle">Title</label>
+          <input type="text" id="idTitle" name="nameTitle"
+                 value="{{ request.form['nameTitle'] or post['title'] }}" required>
 
-          <label for="body">Body</label>
-          <textarea id="body" name="body">{{ request.form['body'] or post['body'] }}</textarea>
+          <label for="idBody">Body</label>
+          <textarea id="idBody" name="nameBody">{{ request.form['body'] or post['body'] }}</textarea>
         </fieldset>
 
         {% if post['media_filename'] %}
-          <section aria-labelledby="current-media">
-            <h2 id="current-media">Current Media</h2>
+          <section aria-labelledby="idCurrentMedia">
+            <h2 id="idCurrentMedia">Current Media</h2>
 
             {% if post['media_type'] == 'image' %}
               <figure>
@@ -43,23 +43,22 @@
 
             <fieldset>
               <legend>Media options</legend>
-              <input type="checkbox" id="remove_file" name="remove_file">
-              <label for="remove_file">Remove current media</label>
+              <input type="checkbox" id="idRemoveFile" name="nameRemoveFile">
+              <label for="idRemoveFile">Remove current media</label>
             </fieldset>
           </section>
         {% endif %}
 
         <fieldset>
           <legend>Upload new media</legend>
-          <label for="file">Choose file</label>
-          <input type="file" id="file" name="file">
+          <label for="idFile">Choose file</label>
+          <input type="file" id="idFile" name="nameFile">
         </fieldset>
-
+        <br>
         <button type="submit">Save</button>
       </form>
-
       <form method="post" action="{{ url_for('blog.delete', id=post['id']) }}">
-        <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+        <button type="submit">Delete</button>
       </form>
     </article>
   </main>

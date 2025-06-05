@@ -25,8 +25,8 @@ def index():
 @login_required
 def create():
     if request.method == "POST":
-        title = request.form["title"]
-        body = request.form["body"]
+        title = request.form["nameTitle"]
+        body = request.form["nameBody"]
         error = None
         file = request.files.get("file")
         filename = None
@@ -60,12 +60,12 @@ def update(id):
     post = get_post(id)
 
     if request.method == "POST":
-        title = request.form["title"]
-        body = request.form["body"]
+        title = request.form["nameTitle"]
+        body = request.form["nameBody"]
         file = request.files.get("file")
         remove_file = "remove_file" in request.form
 
-        filename = post["media_filename"]
+        filename = post["name_file"]
         media_type = post["media_type"]
         error = None
 
@@ -125,11 +125,6 @@ def delete(id):
 
 
 def get_post(id, check_author=True):
-    yau = get_db().execute(
-            "SELECT p.id, title, body, created, media_filename, media_type, author_id, username FROM post p JOIN user u ON p.author_id = u.id WHERE p.id = ?",
-            (id,),
-        ).fetchone()
-    print(dict(yau))
     post = (
         get_db()
         .execute(
