@@ -13,5 +13,7 @@ CREATE TABLE post (
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title TEXT NOT NULL,
     body TEXT NOT NULL,
+    media_filename TEXT,
+    media_type TEXT,
     FOREIGN KEY (author_id) REFERENCES user (id)
 );
