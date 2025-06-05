@@ -1,65 +1,62 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <header>
-    <h1>Edit "{{ post['title'] }}"</h1>
-  </header>
+<header>
+  <h1>Edit "{{ post['title'] }}"</h1>
+</header>
 {% endblock %}
 
 {% block content %}
-  <main>
-    <article>
+<main>
+  <article>
       <form method="post" enctype="multipart/form-data">
         <fieldset>
           <legend>Post content</legend>
-
+          
           <label for="idTitle">Title</label>
-          <input type="text" id="idTitle" name="nameTitle"
-                 value="{{ request.form['nameTitle'] or post['title'] }}" required>
-
+          <input type="text" id="idTitle" name="nameTitle" value="{{ request.form['nameTitle'] or post['title'] }}"
+          required>
+          
           <label for="idBody">Body</label>
           <textarea id="idBody" name="nameBody">{{ request.form['body'] or post['body'] }}</textarea>
         </fieldset>
-
+        
         {% if post['media_filename'] %}
-          <section aria-labelledby="idCurrentMedia">
-            <h2 id="idCurrentMedia">Current Media</h2>
-
-            {% if post['media_type'] == 'image' %}
-              <figure>
-                <img src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}"
-                     alt="Image for this post">
-                <figcaption>{{ post['media_filename'] }}</figcaption>
-              </figure>
-            {% elif post['media_type'] == 'video' %}
-              <figure>
-                <video controls width="300">
-                  <source src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}">
-                  Your browser does not support the video tag.
-                </video>
-                <figcaption>{{ post['media_filename'] }}</figcaption>
-              </figure>
-            {% endif %}
-
-            <fieldset>
-              <legend>Media options</legend>
-              <input type="checkbox" id="idRemoveFile" name="nameRemoveFile">
-              <label for="idRemoveFile">Remove current media</label>
-            </fieldset>
-          </section>
+        <fieldset>
+          <legend>Current Media</legend>
+          {% if post['media_type'] == 'image' %}
+          <figure>
+            <img src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}" alt="Image for this post">
+            <figcaption>{{ post['media_filename'] }}</figcaption>
+          </figure>
+          {% elif post['media_type'] == 'video' %}
+          <figure>
+            <video controls width="300">
+              <source src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}">
+              Your browser does not support the video tag.
+            </video>
+            <figcaption>{{ post['media_filename'] }}</figcaption>
+          </figure>
+          {% endif %}
+        </fieldset>
+        
+        <fieldset>
+          <legend>Media options</legend>
+          <input type="checkbox" id="idRemoveFile" name="nameRemoveFile">
+          <label for="idRemoveFile">Remove current media</label>
+        </fieldset>
         {% endif %}
-
+        
         <fieldset>
           <legend>Upload new media</legend>
           <label for="idFile">Choose file</label>
           <input type="file" id="idFile" name="nameFile">
         </fieldset>
-        <br>
         <button type="submit">Save</button>
       </form>
       <form method="post" action="{{ url_for('blog.delete', id=post['id']) }}">
         <button type="submit">Delete</button>
-      </form>
-    </article>
-  </main>
+    </form>
+  </article>
+</main>
 {% endblock %}

@@ -3,33 +3,32 @@
 {% block title %}Create Post - Flask Blog{% endblock %}
 
 {% block header %}
-  <header>
-    <h1>Create a New Post</h1>
-  </header>
+<header>
+  <h1>Create a New Post</h1>
+</header>
 {% endblock %}
 
 {% block content %}
-  <article>
-    <form method="post" enctype="multipart/form-data">
-      <fieldset>
-        <legend>Post details</legend>
+<article>
+  <form method="post" enctype="multipart/form-data">
+    <fieldset>
+      <legend>Post details</legend>
 
-        <label for="idTitle">Title</label>
-        <input id="idTitle" name="nameTitle" type="text" required
-               value="{{ request.form['nameTitle'] or '' }}">
+      <label for="idTitle">Title</label>
+      <input id="idTitle" name="nameTitle" type="text" required value="{{ request.form['nameTitle'] or '' }}">
 
-        <label for="idBody">Body</label>
-        <textarea id="idBody" name="nameBody">{{ request.form['nameBody'] or '' }}</textarea>
-      </fieldset>
+      <label for="idBody">Body</label>
+      <textarea id="idBody" name="nameBody">{{ request.form['nameBody'] or '' }}</textarea>
+    </fieldset>
 
-      <fieldset>
-        <legend>Upload media (optional)</legend>
+    <fieldset>
+      <legend>Upload media (optional)</legend>
 
-        <label for="idFile">Choose a file</label>
-        <input id="idFile" name="nameFile" type="file" accept="image/*,video/*">
-      </fieldset>
+      <label for="idFile">Choose a file</label>
+      <input id="idFile" name="nameFile" type="file" accept="image/*,video/*">
+    </fieldset>
 
-      <button type="submit">Create</button>
-    </form>
-  </article>
+    <button type="submit">Create</button>
+  </form>
+</article>
 {% endblock %}
