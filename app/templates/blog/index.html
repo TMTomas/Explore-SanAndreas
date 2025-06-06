@@ -1,60 +1,57 @@
 {% extends 'base.html' %}
 
-{% block title %}Home - Flask Blog{% endblock %}
-
 {% block header %}
 <header>
-  <h1>All Posts</h1>
+  <h1>{% block title %}{{ super() }} - Home"{% endblock %}</h1>
 </header>
 {% endblock %}
 
 {% block content %}
 {% if posts %}
-<section>
-  <label for="idSelectAuthor">Autor:</label>
-  <select id="idSelectAuthor">
-    <option value="">Todos</option>
-    {% for user in users %}
-      <option value="{{ user['username'] }}">{{ user['username'] }}</option>
-    {% endfor %}
-  </select>
-
-  <label for="idSelectOrder">Order by:</label>
-  <select id="idSelectOrder">
-    <option value="desc">Recent</option>
-    <option value="asc">Oldest</option>
-  </select>
-</section>
-
-<section id="idSectionPosts">
-  {% for post in posts %}
-  <article>
-    <header>
-      <h2>{{ post['title'] }}</a></h2>
-      <p>By {{ post['username'] }} <time datetime="{{ post['created'] }}">{{ post['created'] }}</time></p>
-      {% if g.user['id'] == post['author_id'] %}
-      <a href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
-      {% endif %}
-    </header>
-    {% if post['media_filename'] %}
-    <figure>
-      {% if post['media_type'] == 'image' %}
-      <img src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}"
-      alt="Image for post {{ post['title'] }}">
-      {% elif post['media_type'] == 'video' %}
-      <video controls width="300">
-        <source src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}">
-        Your browser does not support the video tag.
-      </video>
-      {% endif %}
-      <figcaption>Media for "{{ post['title'] }}"</figcaption>
-    </figure>
-    {% endif %}
-    <p>{{ post['body'] }}</p>
-  </article>
+  <label for="idAuthor">Filter by author:</label>
+  <select id="idAuthor">
+  <option value="">All</option>
+  {% for author in authors %}
+    <option value="{{ author }}">{{ author }}</option>
   {% endfor %}
-</section>
-{% else %}
-<p>No posts yet.</p>
-{% endif %}
-{% endblock %}
+</select>
+  <label for="idOrder">Order by data:</label>
+  <select id="idOrder">
+    <option value="asc">Oldest</option>
+    <option value="desc" selected>Youngest</option>
+  </select>
+
+  <hr>
+
+  <section id="idSectionPosts">
+    {% for post in posts %}
+    <article>
+      <header>
+        <h2>{{ post['title'] }}</a></h2>
+        <p>By {{ post['username'] }} <time datetime="{{ post['created'] }}">{{ post['created'] }}</time></p>
+        {% if g.user['id'] == post['author_id'] %}
+        <a href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
+        {% endif %}
+      </header>
+      {% if post['media_filename'] %}
+      <figure>
+        {% if post['media_type'] == 'image' %}
+        <img src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}"
+          alt="Image for post {{ post['title'] }}">
+        {% elif post['media_type'] == 'video' %}
+        <video controls width="300">
+          <source src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}">
+          Your browser does not support the video tag.
+        </video>
+        {% endif %}
+        <figcaption>Media for "{{ post['title'] }}"</figcaption>
+      </figure>
+      {% endif %}
+      <p>{{ post['body'] }}</p>
+    </article>
+    {% endfor %}
+  </section>
+  {% else %}
+  <p>No posts yet.</p>
+  {% endif %}
+  {% endblock %}

@@ -1,42 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block title %}Flask Blog{% endblock %}</title>
+  <title>{% block title %}Explore San Andreas{% endblock %}</title>
   <script src="{{ url_for('static', filename='scripts/am_util.js') }}"></script>
-  <script src="{{ url_for('static', filename='scripts/dark_mode.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/Post.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}" />
+  <link rel="icon" href="{{ url_for('static', filename='styles/favicon.ico') }}" type="image/ico" />
 </head>
+
 <body>
   <header>
+    <h1>Explore San Andreas</h1>
+    <button id="idBtnDarkToggle">&#127774</button>
     <nav aria-label="Main navigation">
       <ul>
         <li><a href="{{ url_for('blog.index') }}">Home</a></li>
         {% if g.user %}
-        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
         <li><a href="{{ url_for('blog.create') }}">New Post</a></li>
+        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
         {% else %}
         <li><a href="{{ url_for('auth.login') }}">Login</a></li>
         <li><a href="{{ url_for('auth.register') }}">Register</a></li>
         {% endif %}
       </ul>
     </nav>
-    <br>
-    <button id="idBtnDarkToggle">🌞</button>
   </header>
-  
+
   <main>
     {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <section aria-live="polite">
-          <ul class="flash-messages">
-            {% for message in messages %}
-              <li>{{ message }}</li>
-            {% endfor %}
-          </ul>
-        </section>
-      {% endif %}
+    {% if messages %}
+    <section aria-live="polite">
+      <ul class="flash-messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
     {% endwith %}
 
     {% block header %}{% endblock %}
@@ -47,4 +51,5 @@
     <p>© 1994 Explore San Andreas</p>
   </footer>
 </body>
+
 </html>

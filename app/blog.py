@@ -5,6 +5,7 @@ from flask import (
     current_app,
     flash,
     g,
+    jsonify,
     redirect,
     render_template,
     request,
@@ -28,7 +29,8 @@ def index():
         " FROM post p JOIN user u ON p.author_id = u.id"
         " ORDER BY created DESC"
     ).fetchall()
-    return render_template("blog/index.html", posts=posts)
+    authors = get_unique_authors()
+    return render_template("blog/index.html", posts=posts, authors=authors)
 
 
 @bp.route("/create", methods=("GET", "POST"))
@@ -139,6 +141,39 @@ def uploaded_file(filename):
     return send_from_directory(current_app.config["UPLOAD_FOLDER"], filename)
 
 
+@bp.route("/filter")
+def filter_posts():
+    db = get_db()
+    author = request.args.get("author", "")
+    order = request.args.get("order", "desc").lower()
+    if order not in ["asc", "desc"]:
+        order = "desc"
+
+    query = """
+        SELECT p.*, u.username
+        FROM post p
+        JOIN user u ON p.author_id = u.id
+    """
+    params = []
+
+    if author:
+        query += " WHERE u.username = ?"
+        params.append(author)
+
+    query += f" ORDER BY p.created {order.upper()}"
+
+    posts = db.execute(query, params).fetchall()
+
+    post_list = []
+    user_id = g.user["id"] if g.user else None
+    for post in posts:
+        post_dict = dict(post)
+        post_dict["is_owner"] = post["author_id"] == user_id
+        post_list.append(post_dict)
+
+    return jsonify(post_list)
+
+
 def get_post(id, check_author=True):
     post = (
         get_db()
@@ -156,3 +191,15 @@ def get_post(id, check_author=True):
         abort(403)
 
     return post
+
+
+def get_unique_authors():
+    db = get_db()
+    rows = db.execute(
+        """
+        SELECT DISTINCT u.username
+        FROM post p
+        JOIN user u ON p.author_id = u.id
+    """
+    ).fetchall()
+    return [row["username"] for row in rows]

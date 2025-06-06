@@ -33,8 +33,7 @@ header {
 header h1 {
   font-size: 2.25rem;
   font-weight: 600;
-  color: #084f35;
-  /* Deep GTA green */
+  color: #084f35; /* Deep GTA green */
 }
 
 header p {
@@ -129,6 +128,7 @@ label {
 }
 
 input[type="text"],
+input[type='password'],
 textarea,
 input[type="file"] {
   width: 100%;
@@ -152,7 +152,6 @@ textarea {
 }
 
 input[type="submit"],
-
 button {
   background-color: #084f35;
   color: #fff;
@@ -170,19 +169,19 @@ button:hover {
 }
 
 fieldset {
-  border: 1.5px solid #b16e18;  /
+  border: 1.5px solid #b16e18;
   border-radius: 6px;
   padding: 1.25rem 1.5rem;
   margin-bottom: 2rem;
-  background-color: #fff;        
-  box-shadow: 0 2px 5px rgba(177, 110, 24, 0.15); 
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(177, 110, 24, 0.15);
 }
 
 /* Legend */
 fieldset > legend {
   padding: 0 0.75rem;
   font-weight: 600;
-  color: #084f35;               
+  color: #084f35;
   font-size: 1.1rem;
   margin-left: 0.5rem;
 }
@@ -228,7 +227,6 @@ input[type="checkbox"] {
   width: 20px;
   height: 20px;
   border: 2px solid #b16e18;
-  /* cor dourada GTA */
   border-radius: 4px;
   background-color: white;
   cursor: pointer;
@@ -236,13 +234,11 @@ input[type="checkbox"] {
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-/* Checkbox Checked */
 input[type="checkbox"]:checked {
   background-color: #b16e18;
   border-color: #b16e18;
 }
 
-/* Marca de check */
 input[type="checkbox"]:checked::after {
   content: "";
   position: absolute;
@@ -255,12 +251,105 @@ input[type="checkbox"]:checked::after {
   transform: rotate(45deg);
 }
 
-/* Hover para melhor feedback */
 input[type="checkbox"]:hover {
   border-color: #8a5012;
 }
 
+/* Filter and Sort (Added Classes) */
+.filter-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #084f35;
+  margin-bottom: 1rem;
+}
 
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-label {
+  font-weight: 600;
+  color: #222;
+}
+
+.filter-select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* Posts Section */
+.posts-section {
+  display: grid;
+  gap: 2rem;
+}
+
+.post-article {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  background-color: #fff;
+}
+
+.post-header {
+  margin-bottom: 0.5rem;
+}
+
+.post-title {
+  font-size: 1.4rem;
+  color: #084f35;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.post-meta {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.post-edit-link {
+  font-size: 0.85rem;
+  color: #b16e18;
+  font-weight: 500;
+}
+
+.post-edit-link:hover {
+  color: #8a5012;
+  text-decoration: underline;
+}
+
+.post-media {
+  margin-top: 1rem;
+}
+
+.post-body {
+  margin-top: 0.75rem;
+  line-height: 1.6;
+}
+
+select {
+  width: 25%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #222;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+select:focus {
+  border-color: #084f35;
+  outline: none;
+  background-color: #f9f9f9;
+}
 
 /* Dark Mode */
 body.dark-mode {
@@ -269,14 +358,16 @@ body.dark-mode {
 }
 
 body.dark-mode header h1,
-body.dark-mode article h2 {
+body.dark-mode article h2,
+body.dark-mode .post-title {
   color: #90ee90;
 }
 
 body.dark-mode header p,
 body.dark-mode a,
 body.dark-mode article time,
-body.dark-mode figcaption {
+body.dark-mode figcaption,
+body.dark-mode .post-meta {
   color: #ccc;
 }
 
@@ -284,19 +375,22 @@ body.dark-mode a:hover {
   color: #fff;
 }
 
-body.dark-mode article {
+body.dark-mode article,
+body.dark-mode .post-article {
   background-color: #111111;
   border-bottom: 1px solid #333;
+  border-color: #333;
 }
 
 body.dark-mode figure img,
-figure video {
+body.dark-mode figure video {
   background-color: #050505;
 }
 
 body.dark-mode input,
 body.dark-mode textarea,
-body.dark-mode input[type="file"] {
+body.dark-mode input[type="file"],
+body.dark-mode .filter-select {
   background-color: #222;
   color: #eee;
   border-color: #444;
@@ -345,4 +439,19 @@ body.dark-mode fieldset {
 
 body.dark-mode fieldset > legend {
   color: #90ee90;
+}
+
+body.dark-mode .filter-label {
+  color: #ccc;
+}
+
+body.dark-mode select {
+  background-color: #222;
+  color: #eee;
+  border-color: #444;
+}
+
+body.dark-mode select:focus {
+  border-color: #90ee90;
+  background-color: #1b1b1b;
 }

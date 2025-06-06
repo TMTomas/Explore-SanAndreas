@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}Create Post - Flask Blog{% endblock %}
-
 {% block header %}
 <header>
+  {% block title %}{{ super() }} - Create{% endblock %}
   <h1>Create a New Post</h1>
 </header>
 {% endblock %}
