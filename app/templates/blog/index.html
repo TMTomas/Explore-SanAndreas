@@ -10,7 +10,23 @@
 
 {% block content %}
 {% if posts %}
-<section aria-label="Blog posts">
+<section>
+  <label for="idSelectAuthor">Autor:</label>
+  <select id="idSelectAuthor">
+    <option value="">Todos</option>
+    {% for user in users %}
+      <option value="{{ user['username'] }}">{{ user['username'] }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="idSelectOrder">Order by:</label>
+  <select id="idSelectOrder">
+    <option value="desc">Recent</option>
+    <option value="asc">Oldest</option>
+  </select>
+</section>
+
+<section id="idSectionPosts">
   {% for post in posts %}
   <article>
     <header>

@@ -1,7 +1,17 @@
 import os
 
-from flask import Blueprint, current_app, flash, g, redirect, render_template, request, send_from_directory, url_for
-from werkzeug.utils  import secure_filename
+from flask import (
+    Blueprint,
+    current_app,
+    flash,
+    g,
+    redirect,
+    render_template,
+    request,
+    send_from_directory,
+    url_for,
+)
+from werkzeug.utils import secure_filename
 from werkzeug.exceptions import abort
 
 from .auth import login_required
@@ -79,7 +89,7 @@ def update(id):
                 pass
             filename = None
             media_type = None
-            
+
         if file and file.filename:
             if filename:
                 try:
@@ -89,10 +99,10 @@ def update(id):
                 except FileNotFoundError:
                     error += "File not found"
                     pass
-                
+
             filename = secure_filename(file.filename)
             file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
-            
+
             mimetype = file.mimetype
             media_type = (
                 "image"
@@ -124,6 +134,11 @@ def delete(id):
     return redirect(url_for("blog.index"))
 
 
+@bp.route("/uploads/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(current_app.config["UPLOAD_FOLDER"], filename)
+
+
 def get_post(id, check_author=True):
     post = (
         get_db()
@@ -141,7 +156,3 @@ def get_post(id, check_author=True):
         abort(403)
 
     return post
-
-@bp.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
