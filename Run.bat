@@ -17,11 +17,11 @@ if not exist "%INSTANCE_FOLDER%" (
 :: Check if the database file exists, and initialize it if it doesn't
 if not exist "%DATABASE_FILE%" (
     echo Database file not found. Initializing database...
-    python -m flask --app app init-db
+    python -m flask --app Explore-SanAndreas init-db
 )
 
 :: Run the Flask application
-python -m flask --app app run --debug
+python -m flask --app Explore-SanAndreas run --debug
 
 :: Keep the Command Prompt window open
 pause
