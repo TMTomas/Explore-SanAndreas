@@ -26,8 +26,10 @@ function boot() {
     if (authorSelect) authorSelect.onchange = handleFilterChange
     if (orderSelect) orderSelect.onchange = handleFilterChange
     if (btnDarkToggle) btnDarkToggle.onclick = toggleDarkMode
-    if (txtBody) txtBody.addEventListener("input", autoResizeTextarea()) // É prepositado a chamada da função no boot, pois se já lá houver texto quero que a caixa se adapte antes do utilizador começar a escrever
-
+    if (txtBody) {
+        autoResizeTextarea()
+        txtBody.addEventListener("input", autoResizeTextarea) 
+    }
 }
 
 
@@ -47,7 +49,7 @@ function fetchFilteredPosts() {
     fetch(url)
         .then(resp => {
             if (!resp.ok) throw new Error("Failed to fetch.")
-            return resp.json() 
+            return resp.json()
         })
         .then(data => {
             renderPosts(data)
