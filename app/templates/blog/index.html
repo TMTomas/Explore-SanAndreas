@@ -3,44 +3,42 @@
 {% block title %}Home - Flask Blog{% endblock %}
 
 {% block header %}
-  <header>
-    <h1>All Posts</h1>
-  </header>
+<header>
+  <h1>All Posts</h1>
+</header>
 {% endblock %}
 
 {% block content %}
-  {% if posts %}
-    <section aria-label="Blog posts">
-      {% for post in posts %}
-        <article>
-          <header>
-            <h2>{{ post['title'] }}</a></h2>
-            <p>By {{ post['username'] }} on {{ post['created'] }}</p>
-            {% if g.user['id'] == post['author_id'] %}
-            <a href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
-            {% endif %}
-          </header>
-
-          <p>{{ post['body']|truncate(200) }}</p>
-
-          {% if post['media_filename'] %}
-            <figure>
-              {% if post['media_type'] == 'image' %}
-                <img src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}"
-                     alt="Image for post {{ post['title'] }}">
-              {% elif post['media_type'] == 'video' %}
-                <video controls width="300">
-                  <source src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}">
-                  Your browser does not support the video tag.
-                </video>
-              {% endif %}
-              <figcaption>Media for "{{ post['title'] }}"</figcaption>
-            </figure>
-          {% endif %}
-        </article>
-      {% endfor %}
-    </section>
-  {% else %}
-    <p>No posts yet.</p>
-  {% endif %}
+{% if posts %}
+<section aria-label="Blog posts">
+  {% for post in posts %}
+  <article>
+    <header>
+      <h2>{{ post['title'] }}</a></h2>
+      <p>By {{ post['username'] }} <time datetime="{{ post['created'] }}">{{ post['created'] }}</time></p>
+      {% if g.user['id'] == post['author_id'] %}
+      <a href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
+      {% endif %}
+    </header>
+    {% if post['media_filename'] %}
+    <figure>
+      {% if post['media_type'] == 'image' %}
+      <img src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}"
+      alt="Image for post {{ post['title'] }}">
+      {% elif post['media_type'] == 'video' %}
+      <video controls width="300">
+        <source src="{{ url_for('static', filename='uploads/' ~ post['media_filename']) }}">
+        Your browser does not support the video tag.
+      </video>
+      {% endif %}
+      <figcaption>Media for "{{ post['title'] }}"</figcaption>
+    </figure>
+    {% endif %}
+    <p>{{ post['body'] }}</p>
+  </article>
+  {% endfor %}
+</section>
+{% else %}
+<p>No posts yet.</p>
+{% endif %}
 {% endblock %}
