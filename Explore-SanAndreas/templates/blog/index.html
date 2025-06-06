@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 
-{% block header %}
-<header>
-  <h1>{% block title %}{{ super() }} - Home"{% endblock %}</h1>
-</header>
+{% block head %}
+  <h1>{% block title %}{{ super() }} - Home{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +13,7 @@
     <option value="{{ author }}">{{ author }}</option>
   {% endfor %}
 </select>
-  <label for="idOrder">Order by data:</label>
+  <label for="idOrder">Order by date:</label>
   <select id="idOrder">
     <option value="asc">Oldest</option>
     <option value="desc" selected>Youngest</option>

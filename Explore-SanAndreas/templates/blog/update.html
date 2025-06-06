@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 
-{% block header %}
-<header>
+{% block head %}
   <h1>{% block title %}{{ super() }} - Edit "{{ post['title'] }}"{% endblock %}</h1>
-</header>
 {% endblock %}
 
 {% block content %}

@@ -5,8 +5,11 @@ const ID_AUTHOR = "idAuthor",
 const ID_BTN_DARK_TOGGLE = 'idBtnDarkToggle',
     DARK_MODE_CLASS = 'dark-mode'
 
+const ID_BODY = 'idBody'
+
 let authorSelect, orderSelect, postSection
 let body, btnDarkToggle, darkModeClass
+let txtBody
 
 window.onload = boot
 
@@ -16,12 +19,15 @@ function boot() {
     postSection = id(ID_SECTION_POSTS)
     body = document.body
     btnDarkToggle = id(ID_BTN_DARK_TOGGLE)
+    txtBody = id(ID_BODY)
 
     checkDarkModeState()
 
     if (authorSelect) authorSelect.onchange = handleFilterChange
     if (orderSelect) orderSelect.onchange = handleFilterChange
     if (btnDarkToggle) btnDarkToggle.onclick = toggleDarkMode
+    if (txtBody) txtBody.addEventListener("input", autoResizeTextarea()) // É prepositado a chamada da função no boot, pois se já lá houver texto quero que a caixa se adapte antes do utilizador começar a escrever
+
 }
 
 
@@ -73,3 +79,9 @@ function toggleDarkMode() {
     localStorage.setItem("dark-mode", darkModeClass ? "enabled" : "disabled");
     darkModeClass ? btnDarkToggle.innerHTML = '&#127761;' : btnDarkToggle.innerHTML = '&#127774'
 }
+
+function autoResizeTextarea() {
+    txtBody.style.height = 'auto'
+    txtBody.style.height = txtBody.scrollHeight + 'px'
+}
+
