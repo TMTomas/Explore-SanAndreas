@@ -89,10 +89,14 @@ article time {
   display: block;
   margin-bottom: 1rem;
 }
-
+article header p {
+  text-align: center;
+}
 article p {
   margin-bottom: 1rem;
   line-height: 1.8;
+  white-space: pre-line;
+  text-align: justify;
 }
 
 /* Media */
@@ -351,6 +355,7 @@ select:focus {
   outline: none;
   background-color: #f9f9f9;
 }
+
 textarea {
   overflow: hidden;
   transition: height 0.2s ease;
